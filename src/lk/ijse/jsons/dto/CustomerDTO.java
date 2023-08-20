@@ -1,9 +1,40 @@
 package lk.ijse.jsons.dto;
 
-/**
- * @author : Jayani_Arunika  8/19/2023 - 4:23 PM
- * @since : v0.01.0
- **/
-
 public class CustomerDTO {
+    private String id;
+    private String name;
+    private String address;
+
+    public CustomerDTO() {
+    }
+
+    public CustomerDTO(String id, String name, String address) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }

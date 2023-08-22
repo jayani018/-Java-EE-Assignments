@@ -91,115 +91,177 @@
 <script src="../assets/js/bootstrap.min.js"></script>
 <script>
     getAllCustomers();
-    $("#btnGetAll").click(function(){
+    $("#btnGetAll").click(function () {
         getAllCustomers();
     });
-    function getAllCustomers(){
+    function getAllCustomers() {
         $("#tblCustomer").empty();
         <!--send ajax request to the customer servlet using jQuery-->
         $.ajax({
-            url:'customer',
-            dataType :"json",
-            success:function (customers){
-                // console.log(customers);
-                for (let i in customers){
+            url: 'customer',
+            dataType: "json",
+            success: function (customers) {
+                for (let i in customers) {
                     let cus = customers[i];
                     let id = cus.id;
                     let name = cus.name;
                     let address = cus.address;
-                    console.log(id,name,address);
-
                     let row = `<tr><td>${id}</td><td>${name}</td><td>${address}</td></tr>`;
                     $("#tblCustomer").append(row);
                 }
             },
-            error:function(error){
+            error: function (error) {
                 console.log(error);
             }
         });
-
     }
-    // $("#btnCustomer").click(function () {
-    //     let formData = $("#customerForm").serialize();
-    //     $.ajax({
-    //         url: "customer?option=add",
-    //         method : "post",
-    //         data : formData
-    //         // sucess : function (addCustomers) {
-    //         //     console.log(addCustomers);
-    //         // }
-    //     });
+    // getAllCustomers();
+    // $("#btnGetAll").click(function(){
+    //     getAllCustomers();
     // });
-    $("#btnCustomer").click(function (){
-        let formData=$("#customerForm").serialize();
-        $.ajax({
-            url:"customer",
-            method:"post",
-            data:formData,
-            success:function (res) {
-                // console.log(res);
-                alert(res.message);
-                getAllCustomers();
-
-            },
-            error:function (error){
-                console.log(error.responseJSON);
-                alert(error.responseJSON.message);
-
-            }
-        });
-
-    });
-    $("#btnCusDelete").click(function () {
-        let formData = $("#customerForm").serialize();
-        $.ajax({
-            url: "customer",
-            method: "DELETE",
-            data : formData,
-            success:function (resp) {
-                getAllCustomers();
-            }
-        });
-        console.log()
-    })
-    // $("#btnCusDelete").click(function(){
-    //     let formData=$("#customerForm").serialize();
+    // function getAllCustomers(){
+    //     $("#tblCustomer").empty();
+    //     <!--send ajax request to the customer servlet using jQuery-->
     //     $.ajax({
-    //         url:'customer?option=delete',
-    //         method:'post',
-    //         data:formData,
-    //         success:function (resp){
-    //             getAllCustomers();
+    //         url:'customer',
+    //         dataType :"json",
+    //         success:function (customers){
+    //             // console.log(customers);
+    //             for (let i in customers){
+    //                 let cus = customers[i];
+    //                 let id = cus.id;
+    //                 let name = cus.name;
+    //                 let address = cus.address;
+    //                 console.log(id,name,address);
+    //
+    //                 let row = `<tr><td>${id}</td><td>${name}</td><td>${address}</td></tr>`;
+    //                 $("#tblCustomer").append(row);
+    //             }
+    //         },
+    //         error:function(error){
+    //             console.log(error);
     //         }
     //     });
+    //
+    // }
+    $("#btnCustomer").click(function () {
+        let formdata = $("#customerForm").serialize();
+        $.ajax({
+            url: "customer",
+            method: "post",
+            data: formdata,
+            success: function (res) {
+                console.log(res);
+                alert(res.message);
+                getAllCustomers();
+            },
+            error: function (error) {
+                console.log(error.responseJSON);
+                alert(error.responseJSON.message);
+            }
+        });
+    });
+    // $("#btnCustomer").click(function (){
+    //     let formData=$("#customerForm").serialize();
+    //     $.ajax({
+    //         url:"customer",
+    //         method:"post",
+    //         data:formData,
+    //         success:function (res) {
+    //             // console.log(res);
+    //             alert(res.message);
+    //             getAllCustomers();
+    //
+    //         },
+    //         error:function (error){
+    //             console.log(error.responseJSON);
+    //             alert(error.responseJSON.message);
+    //
+    //         }
+    //     });
+    //
     // });
-    // $("#btnUpdate").click(function () {
+    $("#btnCusDelete").click(function () {
+        let cusID =   $('#txtCustomerID').val()
+       // $("#customerForm").val();
+        console.log(cusID)
+        $.ajax({
+            url: "customer/"+cusID,
+            method: 'DELETE',
+            // data:{ cusID: cusID },
+            success: function (resp) {
+                console.log(resp);
+                alert(resp);
+                getAllCustomers();
+            },
+            error: function (error) {
+                console.log(error.responseJSON);
+                alert(error.message);
+            }
+        });
+    });
+
+    // $("#btnCusDelete").click(function () {
     //     let formData = $("#customerForm").serialize();
     //     $.ajax({
-    //         url: "customer?option=delete",
-    //         method: "post",
+    //         url: "customer",
+    //         method: "DELETE",
     //         data : formData,
     //         success:function (resp) {
+    //             getAllCustomers();
     //         }
     //     });
     //     console.log()
     // })
-    $("#btnUpdate").click(function (){
-        let formData=$("#customerForm").serialize();
-        $.ajax({
-            url:'customer',
-            method:'PUT',
-            data:formData,
-            success:function (resp){
-                alert(resp.message);
-                getAllCustomers();
-            },
-            error:function (error){
-                console.log(error.responseJSON);
-                alert(error.responseJSON.message);
+
+        let click = $("#btnUpdate").click(function () {
+            /*   let customer = "{\"cusID\":\"" + $("#txtCustomerID").val() + "\",\"cusName\":\"" + $("#txtCustomerName").val()
+                   + "\",\"cusAddress\":\"" + $("#txtCustomerAddress").val() + "\"} ";*/
+            let cusId = $("#txtCustomerID").val();
+            let cusName = $("#txtCustomerName").val();
+            let cusAddress = $("#txtCustomerAddress").val();
+
+            let customer = {
+                cusID: cusId,
+                cusName: cusName,
+                cusAddress: cusAddress
             }
+
+            JSON.stringify(customer);
+
+
+            $.ajax({
+                url: 'customer',
+                method: 'put',
+                data: customer,
+                contentType: 'application/json',
+                success: function (resp) {
+                    console.log(resp);
+                    alert(resp.message);
+                    getAllCustomers();
+                },
+                error: function (error) {
+                    console.log(error.responseJSON);
+                    alert(error.responseJSON.message);
+                }
+            });
         });
-    });
+    // $("#btnUpdate").click(function (){
+    //     let formData=$("#customerForm").serialize();
+    //     $.ajax({
+    //         url:'customer',
+    //         method:'PUT',
+    //         data:formData,
+    //         success:function (resp){
+    //             alert(resp.message);
+    //             getAllCustomers();
+    //         },
+    //         error:function (error){
+    //             console.log(error.responseJSON);
+    //             alert(error.responseJSON.message);
+    //         }
+    //     });
+    // });
 
 </script>
 
